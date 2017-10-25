@@ -1,22 +1,19 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-
-import './main.html';
-
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var templating_1 = require("meteor/templating");
+require("./main.html");
+var db_1 = require("../common/db");
+templating_1.Template.quotes.helpers({
+    quotes: function () {
+        return db_1.Quotes.find({});
+    }
 });
-
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
-
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
+templating_1.Template.createQuote.events({
+    'submit .new-Quote': function (event) {
+        event.preventDefault();
+        var target = event.target;
+        var quote = target.quote.value;
+        var author = target.author.value;
+        db_1.Quotes.insert({ quote: quote, author: author });
+    }
 });
