@@ -19,7 +19,5 @@ Template.createQuote.events({
     let author = target.author.value;
 
     Quotes.insert({ quote, author });
-
-
   }
 });
